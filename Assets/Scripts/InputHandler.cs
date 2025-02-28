@@ -30,5 +30,15 @@ public class InputHandler : MonoBehaviour
         }
 
         OnMove.Invoke(moveInput.normalized);
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            OnSpacePressed.Invoke();
+        }
+        if(Input.GetMouseButtonDown(0))
+        {
+            OnLeftClick.Invoke();
+        }
+
     }
 }
