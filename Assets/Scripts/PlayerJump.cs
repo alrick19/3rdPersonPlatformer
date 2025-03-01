@@ -28,13 +28,13 @@ public class PlayerJump : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
-    {
-        if (jumpCount > 0)
-        {
-            rb.AddForce(Physics.gravity * gravityScale, ForceMode.Acceleration);
-        }
-    }
+    // private void FixedUpdate()
+    // {
+    //     if (jumpCount > 0)
+    //     {
+    //         rb.AddForce(Physics.gravity * gravityScale, ForceMode.Acceleration);
+    //     }
+    // }
 
     private void OnCollisionEnter(Collision collision)
     {
