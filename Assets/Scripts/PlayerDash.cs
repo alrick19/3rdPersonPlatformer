@@ -2,42 +2,31 @@ using UnityEngine;
 
 public class PlayerDash : MonoBehaviour
 {
-    [SerializeField] protected float dashForce = 10f;
-    [SerializeField] private float dashCooldown = 1f;
-    [SerializeField] private InputHandler inputHandler;
-    private Rigidbody rb;
-    private bool canDash = true;
-    private Transform cameraTransform;
+    [SerializeField] private Player player;
+    [SerializeField] private InputHandler input;
+    public float dashForce = 1f;
 
-    void Awake()
-    {
-        rb = GetComponent<Rigidbody>();
-        inputHandler = GetComponent<InputHandler>();
-    }
     void Start()
     {
-        cameraTransform = Camera.main.transform;
-
-        inputHandler.OnDash.AddListener(Dash);
+        input.OnDash.AddListener(Dash);
     }
 
     private void Dash()
     {
-        if(!canDash) return;
+        // Only dash when in air, for example
+        if (player.isGrounded)
+            return;
 
-        rb.linearVelocity = Vector3.zero;
+        // Calculate dash direction based on the camera's forward direction (ignoring vertical)
+        Vector3 dashDirection = player.cameraTransform.forward;
+        dashDirection.y = 0;
+        dashDirection.Normalize();
 
-        Vector3 forward = cameraTransform.forward;
-        forward.y = 0; 
-        forward.Normalize(); 
+        // Reset current velocity’s horizontal component if necessary
+        Vector3 currentVelocity = player.rb.linearVelocity;
+        player.rb.linearVelocity = new Vector3(currentVelocity.x, 0f, currentVelocity.z);
 
-        rb.AddForce(forward * dashForce, ForceMode.Impulse);
-        canDash = false;
-        Invoke(nameof(ResetDash), dashCooldown);
-    }
-
-    private void ResetDash()
-    {
-        canDash = true;
+        // Apply the dash force
+        player.rb.AddForce(dashDirection * dashForce * 10f, ForceMode.Impulse);
     }
 }

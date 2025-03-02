@@ -1,46 +1,73 @@
+using UnityEditor.Callbacks;
 using UnityEngine;
 
 public class PlayerJump : MonoBehaviour
 {
-    [SerializeField] private InputHandler inputHandler;
-    [SerializeField] private float gravityScale = 1f;
-    public float jumpForce = 10f;
-    private Rigidbody rb;
-    private int jumpCount = 0;
-    public int maxJumps = 2;
+    [SerializeField] private Player player;
+    [SerializeField] private InputHandler input;
 
-    void Awake()
+    [Header("Jump Settings")]
+    public float jumpForce = 1f;
+    public float gravityScale = 2f;
+    public float maxJumpHeight = 4f;
+
+    private float jumpStartY;
+    private int maxJumps = 2;
+    private int jumpsRemaining = 2;
+
+    void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        inputHandler = GetComponent<InputHandler>();   
+        input.OnSpacePressed.AddListener(Jump);
     }
-    private void Start()
+
+    void Update()
     {
-        inputHandler.OnSpacePressed.AddListener(Jump);
-    } 
+        JumpFallOff();
+        JumpReset();
+        HeightControl();
+    }
 
     private void Jump()
     {
-        if (jumpCount < maxJumps)
+
+        // if (!player.readyToJump || !player.isGrounded)
+        // {
+
+        //     return;
+        // }
+        if (jumpsRemaining > 0)
         {
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            jumpCount++;
+            jumpsRemaining--;
+            jumpStartY = player.transform.position.y;
+
+            player.rb.linearVelocity = new Vector3(player.rb.linearVelocity.x, 0f, player.rb.linearVelocity.z);
+            player.rb.AddForce(Vector3.up * jumpForce * 10f, ForceMode.Impulse);
+        }
+
+
+    }
+
+    private void JumpFallOff()
+    {
+        // Apply extra gravity if falling
+        if (!player.isGrounded && player.rb.linearVelocity.y < 0)
+        {
+            player.rb.AddForce(Vector3.down * gravityScale, ForceMode.Acceleration);
+        }
+    }
+    private void JumpReset()
+    {
+        if (player.isGrounded)
+        {
+            jumpsRemaining = maxJumps;
         }
     }
 
-    // private void FixedUpdate()
-    // {
-    //     if (jumpCount > 0)
-    //     {
-    //         rb.AddForce(Physics.gravity * gravityScale, ForceMode.Acceleration);
-    //     }
-    // }
-
-    private void OnCollisionEnter(Collision collision)
+    private void HeightControl()
     {
-        if (collision.gameObject.CompareTag("Ground"))
+        if (player.transform.position.y > jumpStartY + maxJumpHeight)
         {
-            jumpCount = 0;
-        }      
+            player.rb.linearVelocity = new Vector3(player.rb.linearVelocity.x, -1f, player.rb.linearVelocity.z);
+        }
     }
 }

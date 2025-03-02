@@ -1,0 +1,22 @@
+# Setting this directory as the .editorconfig root
+root = true
+
+[*.cs]
+
+#Identation and spacing
+indent_size = 4
+indent_style = space
+tab_width = 4
+
+
+# Enable automatic formatting
+csharp_format_indent_braces = true
+csharp_format_indent_block_contents = true
+csharp_format_indent_switch_labels = true
+csharp_format_new_line_before_open_brace = all
+csharp_format_new_line_before_else = true
+csharp_format_new_line_before_catch = true
+csharp_format_new_line_before_finally = true
+csharp_format_new_line_before_members_in_object_initializers = true
+csharp_format_new_line_before_members_in_anonymous_types = true
+
