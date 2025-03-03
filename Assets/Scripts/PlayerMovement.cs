@@ -16,7 +16,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        SpeedControlV1();
+        LimitSpeed();
     }
 
     private void Move(Vector2 input)
@@ -33,6 +33,18 @@ public class PlayerMovement : MonoBehaviour
         // Use different multipliers if in air vs. on ground
         float multiplier = player.isGrounded ? 1f : airMultiplier;
         player.rb.AddForce(moveDirection * moveSpeed * 10f * multiplier, ForceMode.Force);
+    }
+
+    private void LimitSpeed()
+    {
+        // Get horizontal velocity (ignore vertical component)
+        Vector3 horizontalVelocity = new Vector3(player.rb.linearVelocity.x, 0, player.rb.linearVelocity.z);
+        if (horizontalVelocity.magnitude > moveSpeed)
+        {
+            // Clamp horizontal velocity to moveSpeed while preserving vertical velocity.
+            Vector3 limitedHorizontal = horizontalVelocity.normalized * moveSpeed;
+            player.rb.linearVelocity = new Vector3(limitedHorizontal.x, player.rb.linearVelocity.y, limitedHorizontal.z);
+        }
     }
 
     private void SpeedControl()
