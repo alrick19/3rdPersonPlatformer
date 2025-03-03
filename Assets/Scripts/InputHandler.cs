@@ -8,7 +8,6 @@ public class InputHandler : MonoBehaviour
     public UnityEvent OnSpacePressed = new UnityEvent();
     public UnityEvent OnDash = new UnityEvent();
 
-    // Update is called once per frame
     void Update()
     {
         float moveX = Input.GetAxis("Horizontal");
@@ -22,7 +21,7 @@ public class InputHandler : MonoBehaviour
         {
             OnSpacePressed.Invoke();
         }
-        if(Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
             OnDash.Invoke();
         }

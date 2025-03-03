@@ -4,13 +4,16 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
+    [HideInInspector]
     public Rigidbody rb;
+
+    [HideInInspector]
     public Transform cameraTransform;
 
     [Header("Physics Settings")]
-    public float playerHeight;
-    public LayerMask whatIsGround;
-    public float groundDrag;
+    public float playerHeight = 2f; // de
+    public LayerMask whatIsGround; // Set to whatIsGround Layer in Inspector
+    public float groundDrag; // used instead of friction, can be tweaked for more responsive input
 
     [Header("PlayerState")]
     public bool isGrounded = true;

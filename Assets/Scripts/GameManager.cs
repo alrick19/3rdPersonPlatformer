@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance; //Singleton instance 
+    public static GameManager instance; // Singleton instance 
     [SerializeField] public GameObject coinCollection; // Parent object containing all coins
     [SerializeField] private TextMeshProUGUI coinCounter;
 

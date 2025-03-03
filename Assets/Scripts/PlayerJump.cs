@@ -7,9 +7,9 @@ public class PlayerJump : MonoBehaviour
     [SerializeField] private InputHandler input;
 
     [Header("Jump Settings")]
-    public float jumpForce = 1f;
-    public float gravityScale = 2f;
-    public float maxJumpHeight = 4f;
+    public float jumpForce = 1f; // jump force changes how fast the apex is reached
+    public float gravityScale = 2f; // gravity scale only changed past apex
+    public float maxJumpHeight = 4f; // change this for smaller jumps
 
     private float jumpStartY;
     private int maxJumps = 2;
@@ -29,12 +29,6 @@ public class PlayerJump : MonoBehaviour
 
     private void Jump()
     {
-
-        // if (!player.readyToJump || !player.isGrounded)
-        // {
-
-        //     return;
-        // }
         if (jumpsRemaining > 0)
         {
             jumpsRemaining--;
