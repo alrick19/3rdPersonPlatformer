@@ -14,7 +14,6 @@ public class Player : MonoBehaviour
 
     [Header("PlayerState")]
     public bool isGrounded = true;
-    public bool readyToJump = true;
     public bool readyToDash = true;
 
     [SerializeField] private TextMeshProUGUI speedText;
@@ -42,15 +41,7 @@ public class Player : MonoBehaviour
         isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        Debug.Log($"Collided with: {other.gameObject.name}, Layer: {LayerMask.LayerToName(other.gameObject.layer)} ({other.gameObject.layer})");
 
-        if ((whatIsGround.value & (1 << other.gameObject.layer)) != 0)
-        {
-            isGrounded = true;
-        }
-    }
 
     private void ApplyCommonPhysics()
     {
@@ -58,13 +49,11 @@ public class Player : MonoBehaviour
         {
             // manual friction instead of physics material
             rb.linearDamping = groundDrag;
-            readyToJump = true;
             readyToDash = true;
         }
         else
         {
             rb.linearDamping = 0;
-            readyToJump = false;
             readyToDash = false;
         }
     }
